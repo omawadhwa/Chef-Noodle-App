@@ -1,11 +1,10 @@
-// main.dart
+import 'package:arya/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arya/app.dart';
 import 'package:arya/utils/theme/theme.dart';
-import 'package:arya/controllers/theme_controller.dart'; // Add this import
-import 'package:arya/utils/features/chatbot_arya/screens/chat_screen.dart'; // Add this import
-import 'splash_screen.dart'; // Import your splash screen
+import 'package:arya/controllers/theme_controller.dart';
+import 'package:arya/utils/features/chatbot_arya/screens/chat_screen.dart'; //
 
 void main() {
   runApp(const MyApp());
@@ -35,13 +34,13 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    if (!_isSplashLoaded) {
-      return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen(onLoaded: _onSplashLoaded),
-      );
-    }
-
-    return App();
+    return GetMaterialApp(
+      title: 'Arya App',
+      home: _isSplashLoaded
+          ? const App() // Replace App() with your main app widget
+          : SplashScreen(
+              onLoaded: _onSplashLoaded,
+            ),
+    );
   }
 }

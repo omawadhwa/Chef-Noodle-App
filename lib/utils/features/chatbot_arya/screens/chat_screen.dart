@@ -104,15 +104,16 @@ class _ChatScreenState extends State<ChatScreen> {
       _errorMessage = '';
     });
 
-    try {
+     try {
       final response = await http.post(
-        Uri.parse(
-            'https://biuuatapi.piramalfinance.com/hrchatbotv2/invocations'),
+        Uri.parse('https://bazbkygu5a.execute-api.ap-south-1.amazonaws.com/invocations'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
+          'session_id': '3',
           'query': _queryController.text,
           'user': 'parag.bajaj@piramal.com',
-          'source': 'Arya_MobileApp'
+          'source': 'local',
+          'usecase': 'ARYA-APP'
         }),
       );
 
