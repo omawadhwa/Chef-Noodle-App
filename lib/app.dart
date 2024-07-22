@@ -1,4 +1,5 @@
 // app.dart
+import 'package:arya/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arya/utils/theme/theme.dart';
@@ -17,10 +18,7 @@ class App extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           theme: TAppTheme().lightTheme,
           darkTheme: TAppTheme().darkTheme,
-          home: ChatScreen(
-            themeMode: themeController.themeMode.value,
-            toggleThemeMode: themeController.toggleThemeMode,
-          ),
+          home: const SplashScreen(),
         ));
   }
 }

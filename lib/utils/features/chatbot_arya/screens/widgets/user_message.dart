@@ -6,7 +6,7 @@ class UserMessage extends StatelessWidget {
   final String text;
   final DateTime timestamp;
 
-  const UserMessage(this.text, this.timestamp);
+  const UserMessage(this.text, this.timestamp, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,17 +15,21 @@ class UserMessage extends StatelessWidget {
       alignment: Alignment.centerRight,
       child: Container(
         margin: EdgeInsets.only(
-            top: 10, bottom: 10, left: MediaQuery.of(context).size.width * 0.25, right: 20),
+            top: 10,
+            bottom: 10,
+            left: MediaQuery.of(context).size.width * 0.20,
+            right: 20),
         child: Stack(
           children: [
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: dark ? TColors.darkUserTextBox : TColors.lightUserTextBox,
+                color:
+                    dark ? TColors.darkUserTextBox : TColors.lightUserTextBox,
                 borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(25),
-                    topRight: Radius.circular(25),
-                    bottomLeft: Radius.circular(25)),
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20),
+                    bottomLeft: Radius.circular(20)),
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,

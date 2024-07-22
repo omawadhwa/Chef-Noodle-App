@@ -31,6 +31,7 @@ class ChatScreen extends StatefulWidget {
   final VoidCallback? toggleThemeMode;
 
   const ChatScreen({
+    super.key,
     this.themeMode,
     this.toggleThemeMode,
   });
@@ -56,7 +57,7 @@ class _ChatScreenState extends State<ChatScreen> {
         // Update visibility based on scroll position
         final maxScrollExtent = _scrollController.position.maxScrollExtent;
         final currentScrollPosition = _scrollController.offset;
-        final threshold =
+        const threshold =
             200.0; // Adjust this value to determine when to show the button
 
         // Check if the user has scrolled up from the bottom by more than the threshold
@@ -68,14 +69,13 @@ class _ChatScreenState extends State<ChatScreen> {
     _scrollToBottom();
 
     // Add initial bot message
-    for (int i = 0; i < 10; i++) {
-      messages.add(ChatMessage(
-        text:
-            "Hello, I’m Arya! 👋 I’m your personal finance assistant. How can I help you?",
-        isBotResponse: i % 2 == 0,
-        timestamp: DateTime.now(), // Ensure timestamp is provided
-      ));
-    }
+
+    messages.add(ChatMessage(
+      text:
+          "Hello, I’m Arya! 👋 I’m your personal finance assistant. How can I help you?",
+      isBotResponse: true,
+      timestamp: DateTime.now(), // Ensure timestamp is provided
+    ));
   }
 
   @override
@@ -88,7 +88,7 @@ class _ChatScreenState extends State<ChatScreen> {
     if (_scrollController.hasClients) {
       _scrollController.animateTo(
         _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 500),
+        duration: const Duration(milliseconds: 100),
         curve: Curves.easeOut,
       );
     }
@@ -103,13 +103,22 @@ class _ChatScreenState extends State<ChatScreen> {
       _isLoading = true;
       _errorMessage = '';
     });
+    messages.add(ChatMessage(
+      text: _queryController.text,
+      isBotResponse: false,
+      timestamp: DateTime.now(), // Ensure timestamp is provided
+    ));
+    setState(() {});
+    _scrollToBottom();
 
-     try {
+    _queryController.text = "";
+    try {
       final response = await http.post(
-        Uri.parse('https://bazbkygu5a.execute-api.ap-south-1.amazonaws.com/invocations'),
+        Uri.parse(
+            'https://bazbkygu5a.execute-api.ap-south-1.amazonaws.com/invocations'),
         headers: {'Content-Type': 'application/json'},
         body: jsonEncode({
-          'session_id': '3',
+          'session_id': '4',
           'query': _queryController.text,
           'user': 'parag.bajaj@piramal.com',
           'source': 'local',
@@ -117,27 +126,21 @@ class _ChatScreenState extends State<ChatScreen> {
         }),
       );
 
-      print('Response body: ${response.body}');
+      // print('Response body: ${response.body}');
 
       if (response.statusCode == 200) {
         final responseBody = jsonDecode(response.body);
         setState(() {
           messages.add(ChatMessage(
-            text: _queryController.text,
-            isBotResponse: false,
-            timestamp: DateTime.now(), // Ensure timestamp is provided
-          ));
-          messages.add(ChatMessage(
             text: responseBody['Response'],
             isBotResponse: true,
             timestamp: DateTime.now(), // Ensure timestamp is provided
           ));
-          _queryController.clear();
-          _scrollToBottom(); // Scroll to bottom when new message is added
         });
 
         // Programmatically unfocus the TextField to dismiss the keyboard
         FocusScope.of(context).unfocus();
+        _scrollToBottom();
       } else {
         setState(() {
           _errorMessage =
@@ -179,6 +182,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 Text(
                   'Arya',
                   style: TextStyle(
+                      fontWeight: FontWeight.bold,
                       fontFamily: 'Nunito',
                       color: dark ? Colors.white : Colors.black),
                 ),
@@ -206,7 +210,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     inactiveThumbColor: TColors.white,
                     inactiveTrackColor: TColors.white,
                     activeColor: TColors.primary,
-                    value: widget.themeMode == ThemeMode.dark,
+                    value: dark,
                     onChanged: (value) {
                       widget.toggleThemeMode!();
                       // final mode = value ? 'Dark mode' : 'Light mode';
@@ -231,143 +235,150 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: Container(
-        decoration: const BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage(TImages.bg_vector), fit: BoxFit.cover)),
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  ListView.builder(
-                    controller:
-                        _scrollController, // Attach scroll controller here
-                    itemCount: messages.length,
-                    itemBuilder: (context, index) {
-                      final message = messages[index];
+      body: SafeArea(
+        child: Container(
+          decoration: const BoxDecoration(
+              image: DecorationImage(
+                  image: AssetImage(TImages.bg_vector), fit: BoxFit.cover)),
+          child: Column(
+            children: [
+              Expanded(
+                child: Stack(
+                  children: [
+                    ListView.builder(
+                      controller:
+                          _scrollController, // Attach scroll controller here
+                      itemCount: messages.length,
+                      itemBuilder: (context, index) {
+                        final message = messages[index];
 
-                      // Check if it's a bot response or user message
-                      if (message.isBotResponse) {
-                        return BotMessage(message.text, message.timestamp,
-                            messages.length == 1);
-                      } else {
-                        return UserMessage(message.text, message.timestamp);
-                      }
-                    },
-                  ),
-                  Visibility(
-                    visible: _showScrollToBottom,
-                    child: Positioned(
-                      bottom: -5,
-                      left: (MediaQuery.of(context).size.width - 40) / 2,
-                      width: 40,
-                      child: GestureDetector(
-                        onTap: _scrollToBottom,
-                        child: Container(
-                          padding: const EdgeInsets.all(8),
-                          decoration: BoxDecoration(
-                            color: dark
-                                ? const Color.fromARGB(68, 255, 255, 255)
-                                : const Color.fromARGB(68, 0, 0, 0),
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(20),
-                              topRight: Radius.circular(20),
-                            ),
-                          ),
-                          child: Center(
-                            child: FaIcon(
-                              FontAwesomeIcons.chevronDown,
+                        // Check if it's a bot response or user message
+                        if (message.isBotResponse) {
+                          return BotMessage(message.text, message.timestamp,
+                              messages.length == 1);
+                        } else {
+                          return UserMessage(message.text, message.timestamp);
+                        }
+                      },
+                    ),
+                    Visibility(
+                      visible: _showScrollToBottom,
+                      child: Positioned(
+                        bottom: -5,
+                        left: (MediaQuery.of(context).size.width - 40) / 2,
+                        width: 40,
+                        child: GestureDetector(
+                          onTap: _scrollToBottom,
+                          child: Container(
+                            padding: const EdgeInsets.all(8),
+                            decoration: BoxDecoration(
                               color: dark
-                                  ? Color.fromARGB(255, 0, 0, 0)
-                                  : Color.fromARGB(255, 255, 255, 255),
-                              size: 20,
+                                  ? const Color.fromARGB(68, 255, 255, 255)
+                                  : const Color.fromARGB(68, 0, 0, 0),
+                              borderRadius: const BorderRadius.only(
+                                topLeft: Radius.circular(20),
+                                topRight: Radius.circular(20),
+                              ),
+                            ),
+                            child: Center(
+                              child: FaIcon(
+                                FontAwesomeIcons.chevronDown,
+                                color: dark
+                                    ? const Color.fromARGB(255, 0, 0, 0)
+                                    : const Color.fromARGB(255, 255, 255, 255),
+                                size: 20,
+                              ),
                             ),
                           ),
                         ),
                       ),
                     ),
-                  ),
-                ],
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: dark ? TColors.dark : Color(0xFFF6F6F6),
-                border: const Border(
-                  top: BorderSide(
-                    color: Colors.grey, // Choose your border color here
-                    width: 0.2, // Choose the width of the border
-                  ),
+                  ],
                 ),
               ),
-              height: kBottomNavigationBarHeight,
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _queryController,
-                      style: TextStyle(
-                          color: dark ? Colors.white : Colors.black,
-                          fontSize: TSizes.fontSizeSm),
-                      decoration: InputDecoration(
-                        hintText: _errorMessage.isNotEmpty
-                            ? '$_errorMessage'
-                            : 'Ask Me Anything... ',
-                        hintStyle: TextStyle(
-                            color: dark ? TColors.grey : Colors.grey,
-                            fontSize: TSizes.fontSizeSm),
-                        filled: true,
-                        contentPadding: EdgeInsets.all(10),
-                        fillColor: dark ? Color(0xFF818181) : Colors.white,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide:
-                              BorderSide(width: 0.2, color: Colors.grey),
-                        ),
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide:
-                              BorderSide(width: 0.2, color: Colors.grey),
-                        ),
-                        errorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide:
-                              BorderSide(width: 0.2, color: Colors.grey),
-                        ),
-                        focusedErrorBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide:
-                              BorderSide(width: 0.2, color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(100),
-                          borderSide:
-                              BorderSide(width: 0.2, color: Colors.grey),
+              Container(
+                decoration: BoxDecoration(
+                  color: dark ? TColors.dark : const Color(0xFFF6F6F6),
+                  border: const Border(
+                    top: BorderSide(
+                      color: Colors.grey, // Choose your border color here
+                      width: 0.2, // Choose the width of the border
+                    ),
+                  ),
+                ),
+                height: kBottomNavigationBarHeight + 20,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onSubmitted: (value) {
+                          _sendQuery();
+                        },
+                        controller: _queryController,
+                        style: TextStyle(
+                            color: dark ? Colors.white : Colors.black,
+                            fontSize: TSizes.fontSizeMd),
+                        decoration: InputDecoration(
+                          hintText: _errorMessage.isNotEmpty
+                              ? _errorMessage
+                              : 'Ask Me Anything... ',
+                          hintStyle: TextStyle(
+                              color: dark ? TColors.grey : Colors.grey,
+                              fontSize: TSizes.fontSizeSm),
+                          filled: true,
+                          contentPadding: const EdgeInsets.all(10),
+                          fillColor:
+                              dark ? const Color(0xFF818181) : Colors.white,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(
+                                width: 0.2, color: Colors.grey),
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(
+                                width: 0.2, color: Colors.grey),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(
+                                width: 0.2, color: Colors.grey),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(
+                                width: 0.2, color: Colors.grey),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(100),
+                            borderSide: const BorderSide(
+                                width: 0.2, color: Colors.grey),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  IconButton(
-                    icon: _isLoading
-                        ? const Center(
-                            child: SpinKitFadingCircle(
-                              color: TColors.primary,
-                              size: 22.0,
+                    IconButton(
+                      icon: _isLoading
+                          ? const Center(
+                              child: SpinKitFadingCircle(
+                                color: TColors.primary,
+                                size: 22.0,
+                              ),
+                            )
+                          : Image.asset(
+                              TImages.sendIcon,
+                              height: 24,
+                              width: 24,
                             ),
-                          )
-                        : Image.asset(
-                            TImages.sendIcon,
-                            height: 24,
-                            width: 24,
-                          ),
-                    onPressed: _isLoading ? null : _sendQuery,
-                  )
-                ],
+                      onPressed: _isLoading ? null : _sendQuery,
+                    )
+                  ],
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
