@@ -52,7 +52,7 @@ flutter:
   # LOCAL ASSETS
   assets:
     # - assets/icons/brands/
-    - assets/images/on_boarding_images/
+    # - assets/images/on_boarding_images/
     - assets/images/
     - assets/logos/
     - assets/logos/splash_bg.png
