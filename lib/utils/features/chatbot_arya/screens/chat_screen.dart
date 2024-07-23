@@ -35,7 +35,7 @@ class _ChatScreenState extends State<ChatScreen> {
     super.initState();
     x = Get.put(ChatController());
     x.addListener(_updateState);
-    x.createSession();
+
     x.scrollController.addListener(() {
       // Update visibility based on scroll position
       final maxScrollExtent = x.scrollController.position.maxScrollExtent;
@@ -51,12 +51,6 @@ class _ChatScreenState extends State<ChatScreen> {
     });
     x.scrollToBottom();
 
-    x.messages.add(ChatMessage(
-      text:
-          "Hello, I’m Arya! 👋 I’m your personal finance assistant. How can I help you?",
-      isBotResponse: true,
-      timestamp: DateTime.now(), // Ensure timestamp is provided
-    ));
     x.update();
   }
 
@@ -138,152 +132,165 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
         ],
       ),
-      body: SafeArea(
-        child: Container(
-          decoration: const BoxDecoration(
-              image: DecorationImage(
-                  image: AssetImage(TImages.bg_vector), fit: BoxFit.cover)),
-          child: Column(
-            children: [
-              Expanded(
-                child: Stack(
-                  children: [
-                    ListView.builder(
-                      controller:
-                          x.scrollController, // Attach scroll controller here
-                      itemCount: x.messages.length,
-                      itemBuilder: (context, index) {
-                        final message = x.messages[index];
-
-                        // Check if it's a bot response or user message
-                        if (message.isBotResponse) {
-                          return BotMessage(message.text, message.timestamp,
-                              x.messages.length == 1);
-                        } else {
-                          return UserMessage(message.text, message.timestamp);
-                        }
-                      },
-                    ),
-                    Visibility(
-                      visible: x.showScrollToBottom,
-                      child: Positioned(
-                        bottom: -5,
-                        left: (MediaQuery.of(context).size.width - 40) / 2,
-                        width: 40,
-                        child: GestureDetector(
-                          onTap: x.scrollToBottom,
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: dark
-                                  ? const Color.fromARGB(68, 255, 255, 255)
-                                  : const Color.fromARGB(68, 0, 0, 0),
-                              borderRadius: const BorderRadius.only(
-                                topLeft: Radius.circular(20),
-                                topRight: Radius.circular(20),
-                              ),
-                            ),
-                            child: Center(
-                              child: FaIcon(
-                                FontAwesomeIcons.chevronDown,
-                                color: dark
-                                    ? const Color.fromARGB(255, 0, 0, 0)
-                                    : const Color.fromARGB(255, 255, 255, 255),
-                                size: 20,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+      body: x.loadingHistory || x.creatingSession
+          ? const Center(
+              child: SpinKitFadingCircle(
+                color: TColors.primary,
+                size: 22.0,
               ),
-              Container(
-                decoration: BoxDecoration(
-                  color: dark ? TColors.dark : const Color(0xFFF6F6F6),
-                  border: const Border(
-                    top: BorderSide(
-                      color: Colors.grey, // Choose your border color here
-                      width: 0.2, // Choose the width of the border
-                    ),
-                  ),
-                ),
-                height: kBottomNavigationBarHeight + 20,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 10),
-                child: Row(
+            )
+          : SafeArea(
+              child: Container(
+                decoration: const BoxDecoration(
+                    image: DecorationImage(
+                        image: AssetImage(TImages.bg_vector),
+                        fit: BoxFit.cover)),
+                child: Column(
                   children: [
                     Expanded(
-                      child: TextField(
-                        onSubmitted: (value) {
-                          x.sendQuery();
-                        },
-                        controller: x.queryController,
-                        style: TextStyle(
-                            color: dark ? Colors.white : Colors.black,
-                            fontSize: TSizes.fontSizeMd),
-                        decoration: InputDecoration(
-                          hintText: x.errorMessage.isNotEmpty
-                              ? x.errorMessage
-                              : 'Ask Me Anything... ',
-                          hintStyle: TextStyle(
-                              color: dark ? TColors.grey : Colors.grey,
-                              fontSize: TSizes.fontSizeSm),
-                          filled: true,
-                          contentPadding: const EdgeInsets.all(10),
-                          fillColor:
-                              dark ? const Color(0xFF818181) : Colors.white,
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(
-                                width: 0.2, color: Colors.grey),
+                      child: Stack(
+                        children: [
+                          ListView.builder(
+                            controller: x
+                                .scrollController, // Attach scroll controller here
+                            itemCount: x.messages.length,
+                            itemBuilder: (context, index) {
+                              final message = x.messages[index];
+
+                              // Check if it's a bot response or user message
+                              if (message.isBotResponse) {
+                                return BotMessage(message.text,
+                                    message.timestamp, x.messages.length == 1);
+                              } else {
+                                return UserMessage(
+                                    message.text, message.timestamp);
+                              }
+                            },
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(
-                                width: 0.2, color: Colors.grey),
+                          Visibility(
+                            visible: x.showScrollToBottom,
+                            child: Positioned(
+                              bottom: -5,
+                              left:
+                                  (MediaQuery.of(context).size.width - 40) / 2,
+                              width: 40,
+                              child: GestureDetector(
+                                onTap: x.scrollToBottom,
+                                child: Container(
+                                  padding: const EdgeInsets.all(8),
+                                  decoration: BoxDecoration(
+                                    color: dark
+                                        ? const Color.fromARGB(
+                                            68, 255, 255, 255)
+                                        : const Color.fromARGB(68, 0, 0, 0),
+                                    borderRadius: const BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      topRight: Radius.circular(20),
+                                    ),
+                                  ),
+                                  child: Center(
+                                    child: FaIcon(
+                                      FontAwesomeIcons.chevronDown,
+                                      color: dark
+                                          ? const Color.fromARGB(255, 0, 0, 0)
+                                          : const Color.fromARGB(
+                                              255, 255, 255, 255),
+                                      size: 20,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
                           ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(
-                                width: 0.2, color: Colors.grey),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(
-                                width: 0.2, color: Colors.grey),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(100),
-                            borderSide: const BorderSide(
-                                width: 0.2, color: Colors.grey),
+                        ],
+                      ),
+                    ),
+                    Container(
+                      decoration: BoxDecoration(
+                        color: dark ? TColors.dark : const Color(0xFFF6F6F6),
+                        border: const Border(
+                          top: BorderSide(
+                            color: Colors.grey, // Choose your border color here
+                            width: 0.2, // Choose the width of the border
                           ),
                         ),
                       ),
-                    ),
-                    IconButton(
-                      icon: x.isLoading
-                          ? const Center(
-                              child: SpinKitFadingCircle(
-                                color: TColors.primary,
-                                size: 22.0,
+                      height: kBottomNavigationBarHeight + 20,
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 16.0, vertical: 10),
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              onSubmitted: (value) {
+                                x.sendQuery();
+                              },
+                              controller: x.queryController,
+                              style: TextStyle(
+                                  color: dark ? Colors.white : Colors.black,
+                                  fontSize: TSizes.fontSizeMd),
+                              decoration: InputDecoration(
+                                hintText: x.errorMessage.isNotEmpty
+                                    ? x.errorMessage
+                                    : 'Ask Me Anything... ',
+                                hintStyle: TextStyle(
+                                    color: dark ? TColors.grey : Colors.grey,
+                                    fontSize: TSizes.fontSizeSm),
+                                filled: true,
+                                contentPadding: const EdgeInsets.all(10),
+                                fillColor: dark
+                                    ? const Color(0xFF818181)
+                                    : Colors.white,
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderSide: const BorderSide(
+                                      width: 0.2, color: Colors.grey),
+                                ),
+                                enabledBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderSide: const BorderSide(
+                                      width: 0.2, color: Colors.grey),
+                                ),
+                                errorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderSide: const BorderSide(
+                                      width: 0.2, color: Colors.grey),
+                                ),
+                                focusedErrorBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderSide: const BorderSide(
+                                      width: 0.2, color: Colors.grey),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(100),
+                                  borderSide: const BorderSide(
+                                      width: 0.2, color: Colors.grey),
+                                ),
                               ),
-                            )
-                          : Image.asset(
-                              TImages.sendIcon,
-                              height: 24,
-                              width: 24,
                             ),
-                      onPressed: x.isLoading ? null : x.sendQuery,
-                    )
+                          ),
+                          IconButton(
+                            icon: x.isLoading
+                                ? const Center(
+                                    child: SpinKitFadingCircle(
+                                      color: TColors.primary,
+                                      size: 22.0,
+                                    ),
+                                  )
+                                : Image.asset(
+                                    TImages.sendIcon,
+                                    height: 24,
+                                    width: 24,
+                                  ),
+                            onPressed: x.isLoading ? null : x.sendQuery,
+                          )
+                        ],
+                      ),
+                    ),
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ),
+            ),
     );
   }
 }

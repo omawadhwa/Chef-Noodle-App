@@ -103,7 +103,7 @@ class _TLoginFormState extends State<TLoginForm> {
               width: double.infinity,
               child: ElevatedButton(
                 onPressed: () async {
-                  if (!formKey.currentState!.validate()) {
+                  if (formKey.currentState!.validate()) {
                     final prefs = await SharedPreferences.getInstance();
                     prefs.setBool("isAuthenticated", true);
                     final ThemeController themeController =

@@ -22,10 +22,10 @@ class TElevatedButtonTheme {
       style: ElevatedButton.styleFrom(
     elevation: 0,
     foregroundColor: Colors.white,
-    backgroundColor: Colors.blue,
+    backgroundColor: TColors.textprimary,
     disabledForegroundColor: Colors.grey,
     disabledBackgroundColor: Colors.grey,
-    side: const BorderSide(color: Colors.blue),
+    side: const BorderSide(color: TColors.textprimary),
     padding: const EdgeInsets.symmetric(vertical: 18),
     textStyle: const TextStyle(
         fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),

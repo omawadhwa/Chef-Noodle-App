@@ -3,6 +3,9 @@ import 'dart:developer';
 import 'package:arya/utils/constants/colors.dart';
 import 'package:arya/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_html/flutter_html.dart';
+import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher_string.dart';
 
 class BotMessage extends StatelessWidget {
   final String text;
@@ -37,18 +40,9 @@ class BotMessage extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
+                  _renderHtml(text),
                   Text(
-                    text,
-                    style: dark
-                        ? const TextStyle(
-                            color: TColors.darkBotText,
-                            fontWeight: FontWeight.w600)
-                        : const TextStyle(
-                            color: TColors.lightBotText,
-                            fontWeight: FontWeight.w600),
-                  ),
-                  Text(
-                    '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
+                    DateFormat("hh:mm a").format(timestamp),
                     style: dark
                         ? const TextStyle(
                             color: TColors.darkBotText,
@@ -65,6 +59,15 @@ class BotMessage extends StatelessWidget {
           ],
         ),
       ),
+    );
+  }
+
+  _renderHtml(text) {
+    return Html(
+      data: text,
+      onLinkTap: (url, attributes, element) async {
+        await launchUrlString(url!);
+      },
     );
   }
 }

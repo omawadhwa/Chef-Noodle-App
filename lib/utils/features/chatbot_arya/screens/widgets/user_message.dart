@@ -1,6 +1,7 @@
 import 'package:arya/utils/constants/colors.dart';
 import 'package:arya/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class UserMessage extends StatelessWidget {
   final String text;
@@ -45,7 +46,7 @@ class UserMessage extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    '${timestamp.hour}:${timestamp.minute.toString().padLeft(2, '0')}',
+                    DateFormat("hh:mm a").format(timestamp),
                     style: dark
                         ? const TextStyle(
                             color: TColors.darkUserText,
