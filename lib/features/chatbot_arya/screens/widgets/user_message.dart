@@ -46,7 +46,9 @@ class UserMessage extends StatelessWidget {
                             fontWeight: FontWeight.w600),
                   ),
                   Text(
-                    DateFormat("hh:mm a").format(timestamp),
+                    !isToday(timestamp)
+                        ? DateFormat("dd MMM yyyy  hh:mm a").format(timestamp)
+                        : DateFormat("hh:mm a").format(timestamp),
                     style: dark
                         ? const TextStyle(
                             color: TColors.darkUserText,
@@ -64,5 +66,16 @@ class UserMessage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  isToday(DateTime dateTime) {
+    final now = DateTime.now();
+    if (dateTime.day == now.day &&
+        dateTime.month == now.month &&
+        dateTime.year == now.year) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

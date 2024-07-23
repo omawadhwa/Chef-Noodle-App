@@ -4,7 +4,7 @@ import 'package:arya/utils/constants/sizes.dart';
 import 'package:arya/features/chatbot_arya/controller/chat_controller.dart';
 import 'package:arya/features/chatbot_arya/screens/widgets/bot_message.dart';
 import 'package:arya/features/chatbot_arya/screens/widgets/user_message.dart';
-import 'package:arya/features/chatbot_arya/models/chatmessage.dart';
+import 'package:arya/utils/features/models/chatmessage.dart';
 import 'package:arya/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';

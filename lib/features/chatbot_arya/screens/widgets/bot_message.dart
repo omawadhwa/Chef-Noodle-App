@@ -42,7 +42,9 @@ class BotMessage extends StatelessWidget {
                 children: [
                   _renderHtml(text),
                   Text(
-                    DateFormat("hh:mm a").format(timestamp),
+                    !isToday(timestamp)
+                        ? DateFormat("dd MMM yyyy  hh:mm a").format(timestamp)
+                        : DateFormat("hh:mm a").format(timestamp),
                     style: dark
                         ? const TextStyle(
                             color: TColors.darkBotText,
@@ -60,6 +62,17 @@ class BotMessage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  isToday(DateTime dateTime) {
+    final now = DateTime.now();
+    if (dateTime.day == now.day &&
+        dateTime.month == now.month &&
+        dateTime.year == now.year) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
   _renderHtml(text) {
