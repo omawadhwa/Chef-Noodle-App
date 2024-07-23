@@ -4,7 +4,7 @@ import 'package:get/get.dart';
 import 'package:arya/app.dart';
 import 'package:arya/utils/theme/theme.dart';
 import 'package:arya/controllers/theme_controller.dart';
-import 'package:arya/utils/features/chatbot_arya/screens/chat_screen.dart'; //
+import 'package:arya/features/chatbot_arya/screens/chat_screen.dart'; //
 
 void main() {
   runApp(const App());

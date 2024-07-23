@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arya/utils/constants/sizes.dart';
 import 'package:arya/utils/constants/text_strings.dart';
-import 'package:arya/utils/features/chatbot_arya/screens/chat_screen.dart';
+import 'package:arya/features/chatbot_arya/screens/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TLoginForm extends StatefulWidget {

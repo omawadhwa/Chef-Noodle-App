@@ -1,5 +1,5 @@
 import 'package:arya/controllers/theme_controller.dart';
-import 'package:arya/utils/features/chatbot_arya/screens/chat_screen.dart';
+import 'package:arya/features/chatbot_arya/screens/chat_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arya/features/authentication/screens/login/login.dart';
@@ -23,10 +23,10 @@ class SplashScreen extends StatelessWidget {
       final isAuthenticated = prefs.getBool("isAuthenticated");
       // onLoaded(); // Call the callback to update the state in main.dart
       if (isAuthenticated == null) {
-        Get.offAll(() => const LoginScreen());
+        Get.off(() => const LoginScreen());
       } else if (isAuthenticated) {
         final ThemeController themeController = Get.put(ThemeController());
-        Get.offAll(() => ChatScreen(
+        Get.off(() => ChatScreen(
               themeMode: themeController.themeMode.value,
               toggleThemeMode: themeController.toggleThemeMode,
             ));
