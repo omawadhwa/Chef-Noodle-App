@@ -8,11 +8,13 @@ import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher_string.dart';
 
 class BotMessage extends StatelessWidget {
+  final id;
   final String text;
   final DateTime timestamp;
   final bool isFirstMessage;
 
-  const BotMessage(this.text, this.timestamp, this.isFirstMessage, {super.key});
+  const BotMessage(this.text, this.timestamp, this.isFirstMessage, this.id,
+      {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +28,8 @@ class BotMessage extends StatelessWidget {
             bottom: 10,
             right: MediaQuery.of(context).size.width * 0.20,
             left: 20),
-        child: Stack(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
               padding: const EdgeInsets.all(10),
@@ -58,6 +61,11 @@ class BotMessage extends StatelessWidget {
                 ],
               ),
             ),
+            // if (id == "initial")
+            //   Column(
+            //     crossAxisAlignment: CrossAxisAlignment.start,
+            //     children: List.generate(3, (index) => Text("$index")),
+            //   )
           ],
         ),
       ),
@@ -84,8 +92,3 @@ class BotMessage extends StatelessWidget {
     );
   }
 }
-
-// if(isFirstMessage)Column(crossAxisAlignment: CrossAxisAlignment.start,children: List.generate(3, (index)=>Text("$index")),)
-
-
-

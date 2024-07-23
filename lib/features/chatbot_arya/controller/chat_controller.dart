@@ -170,6 +170,7 @@ class ChatController extends GetxController {
                 isBotResponse: history.type == Type.BOT))
             .toList();
         messages.add(ChatMessage(
+          id: "initial",
           text:
               "Hello, I’m Arya! 👋 I’m your personal finance assistant. How can I help you?",
           isBotResponse: true,

@@ -136,7 +136,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ? const Center(
               child: SpinKitFadingCircle(
                 color: TColors.primary,
-                size: 22.0,
+                size: 30,
               ),
             )
           : SafeArea(
@@ -159,8 +159,11 @@ class _ChatScreenState extends State<ChatScreen> {
 
                               // Check if it's a bot response or user message
                               if (message.isBotResponse) {
-                                return BotMessage(message.text,
-                                    message.timestamp, x.messages.length == 1);
+                                return BotMessage(
+                                    message.text,
+                                    message.timestamp,
+                                    x.messages.length == 1,
+                                    message.id);
                               } else {
                                 return UserMessage(
                                     message.text, message.timestamp);

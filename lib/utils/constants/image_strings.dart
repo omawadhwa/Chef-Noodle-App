@@ -7,7 +7,7 @@ class TImages {
   static const String lightAppLogo = "assets/logos/splash-logo-black.png";
 
   static const String piramalLogo = "assets/logos/piramal.png";
-
+  static const String piramalLogoDark = "assets/logos/piramal_dark.png";
   //Social logos
   static const String google = "assets/logos/google-icon.png";
   static const String facebook = "assets/logos/facebook-icon.png";

@@ -1,6 +1,7 @@
 import 'dart:ffi';
 
 import 'package:arya/controllers/theme_controller.dart';
+import 'package:arya/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:arya/utils/constants/sizes.dart';
@@ -24,6 +25,7 @@ class _TLoginFormState extends State<TLoginForm> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+    final dark = THelperFuntions.isDarkMode(context);
     return Form(
       key: formKey,
       child: Padding(
@@ -42,10 +44,16 @@ class _TLoginFormState extends State<TLoginForm> {
                 }
                 return null;
               },
-              decoration: const InputDecoration(
-                prefixIcon: Icon(Icons.email_rounded),
-                labelText: TTexts.email,
-              ),
+              style: TextStyle(color: dark ? Colors.white : Colors.black),
+              decoration: InputDecoration(
+                  prefixIcon: const Icon(Icons.email_rounded),
+                  labelText: TTexts.email,
+                  floatingLabelStyle:
+                      TextStyle(color: dark ? Colors.white : Colors.black),
+                  labelStyle: Theme.of(context)
+                      .textTheme
+                      .labelLarge!
+                      .copyWith(color: dark ? Colors.white : Colors.black)),
             ),
             const SizedBox(height: TSizes.spaceBtwInputFields),
 
@@ -61,10 +69,17 @@ class _TLoginFormState extends State<TLoginForm> {
                 }
                 return null;
               },
+              style: TextStyle(color: dark ? Colors.white : Colors.black),
               obscureText: obsure,
               decoration: InputDecoration(
                 prefixIcon: const Icon(Icons.lock_rounded),
                 labelText: TTexts.password,
+                floatingLabelStyle:
+                    TextStyle(color: dark ? Colors.white : Colors.black),
+                labelStyle: Theme.of(context)
+                    .textTheme
+                    .labelLarge!
+                    .copyWith(color: dark ? Colors.white : Colors.black),
                 suffixIcon: GestureDetector(
                     onTap: () {
                       obsure = !obsure;
