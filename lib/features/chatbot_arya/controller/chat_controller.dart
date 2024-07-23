@@ -21,7 +21,7 @@ class ChatController extends GetxController {
   }
 
   List<ChatMessage> messages = [];
-
+  bool userInteracted = false;
   bool isLoading = false;
   String errorMessage = '';
   String email = 'parag.bajaj@piramal.com';
@@ -48,7 +48,8 @@ class ChatController extends GetxController {
       isBotResponse: false,
       timestamp: DateTime.now(), // Ensure timestamp is provided
     ));
-
+    userInteracted = true;
+    update();
     Future.delayed(const Duration(milliseconds: 100), () {
       scrollToBottom();
     });

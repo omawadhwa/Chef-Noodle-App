@@ -162,7 +162,7 @@ class _ChatScreenState extends State<ChatScreen> {
                                 return BotMessage(
                                     message.text,
                                     message.timestamp,
-                                    x.messages.length == 1,
+                                    x.userInteracted,
                                     message.id);
                               } else {
                                 return UserMessage(

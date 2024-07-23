@@ -11,9 +11,9 @@ class BotMessage extends StatelessWidget {
   final id;
   final String text;
   final DateTime timestamp;
-  final bool isFirstMessage;
+  final bool userInteracted;
 
-  const BotMessage(this.text, this.timestamp, this.isFirstMessage, this.id,
+  const BotMessage(this.text, this.timestamp, this.userInteracted, this.id,
       {super.key});
 
   @override
@@ -61,11 +61,16 @@ class BotMessage extends StatelessWidget {
                 ],
               ),
             ),
-            // if (id == "initial")
-            //   Column(
-            //     crossAxisAlignment: CrossAxisAlignment.start,
-            //     children: List.generate(3, (index) => Text("$index")),
-            //   )
+            if (id == "initial" && !userInteracted)
+              //show Suggestive messages here
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: List.generate(3, (index) => Text("$index")),
+              )
+            else
+              //show feedback buttons here
+
+              const Row(children: [])
           ],
         ),
       ),
