@@ -43,7 +43,7 @@ class BotMessage extends StatelessWidget {
                   _renderHtml(text),
                   Text(
                     !isToday(timestamp)
-                        ? DateFormat("dd MMM yyyy hh:mm a").format(timestamp)
+                        ? DateFormat("dd MMM, hh:mm a").format(timestamp)
                         : DateFormat("hh:mm a").format(timestamp),
                     style: dark
                         ? const TextStyle(
