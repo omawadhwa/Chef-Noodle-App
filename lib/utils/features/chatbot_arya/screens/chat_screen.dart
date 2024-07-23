@@ -1,30 +1,18 @@
 import 'package:arya/utils/constants/colors.dart';
 import 'package:arya/utils/constants/image_strings.dart';
 import 'package:arya/utils/constants/sizes.dart';
+import 'package:arya/utils/features/chatbot_arya/controller/chat_controller.dart';
 import 'package:arya/utils/features/chatbot_arya/screens/widgets/bot_message.dart';
 import 'package:arya/utils/features/chatbot_arya/screens/widgets/user_message.dart';
+import 'package:arya/utils/features/models/chatmessage.dart';
 import 'package:arya/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:flutter/services.dart';
-
-// Define a model for chat messages
-class ChatMessage {
-  final String text;
-  final bool isBotResponse;
-  final DateTime timestamp; // Add timestamp
-
-  ChatMessage({
-    required this.text,
-    this.isBotResponse = true,
-    DateTime? timestamp, // Initialize timestamp as nullable
-  }) : timestamp = timestamp ??
-            DateTime.now(); // Assign current time if timestamp is null
-}
 
 class ChatScreen extends StatefulWidget {
   final ThemeMode? themeMode;
@@ -41,125 +29,46 @@ class ChatScreen extends StatefulWidget {
 }
 
 class _ChatScreenState extends State<ChatScreen> {
-  final TextEditingController _queryController = TextEditingController();
-  List<ChatMessage> messages = [];
-  bool _isLoading = false;
-  String _errorMessage = '';
-  late ScrollController
-      _scrollController; // Declare as late to initialize in initState
-  bool _showScrollToBottom = false; // Flag to control visibility of the button
-
+  late ChatController x;
   @override
   void initState() {
     super.initState();
-    _scrollController = ScrollController()
-      ..addListener(() {
-        // Update visibility based on scroll position
-        final maxScrollExtent = _scrollController.position.maxScrollExtent;
-        final currentScrollPosition = _scrollController.offset;
-        const threshold =
-            200.0; // Adjust this value to determine when to show the button
+    x = Get.put(ChatController());
+    x.addListener(_updateState);
+    x.createSession();
+    x.scrollController.addListener(() {
+      // Update visibility based on scroll position
+      final maxScrollExtent = x.scrollController.position.maxScrollExtent;
+      final currentScrollPosition = x.scrollController.offset;
+      const threshold =
+          200.0; // Adjust this value to determine when to show the button
 
-        // Check if the user has scrolled up from the bottom by more than the threshold
-        setState(() {
-          _showScrollToBottom =
-              (maxScrollExtent - currentScrollPosition > threshold);
-        });
+      // Check if the user has scrolled up from the bottom by more than the threshold
+      setState(() {
+        x.showScrollToBottom =
+            (maxScrollExtent - currentScrollPosition > threshold);
       });
-    _scrollToBottom();
+    });
+    x.scrollToBottom();
 
-    // Add initial bot message
-
-    messages.add(ChatMessage(
+    x.messages.add(ChatMessage(
       text:
           "Hello, I’m Arya! 👋 I’m your personal finance assistant. How can I help you?",
       isBotResponse: true,
       timestamp: DateTime.now(), // Ensure timestamp is provided
     ));
+    x.update();
   }
 
   @override
   void dispose() {
-    _scrollController.dispose(); // Dispose of scroll controller
+    x.scrollController.dispose(); // Dispose of scroll controller
+    x.removeListener(_updateState);
     super.dispose();
   }
 
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 100),
-        curve: Curves.easeOut,
-      );
-    }
-  }
-
-  Future<void> _sendQuery() async {
-    if (_queryController.text.isEmpty) {
-      return;
-    }
-
-    setState(() {
-      _isLoading = true;
-      _errorMessage = '';
-    });
-    messages.add(ChatMessage(
-      text: _queryController.text,
-      isBotResponse: false,
-      timestamp: DateTime.now(), // Ensure timestamp is provided
-    ));
+  _updateState() {
     setState(() {});
-    _scrollToBottom();
-
-    _queryController.text = "";
-    try {
-      final response = await http.post(
-        Uri.parse(
-            'https://bazbkygu5a.execute-api.ap-south-1.amazonaws.com/invocations'),
-        headers: {'Content-Type': 'application/json'},
-        body: jsonEncode({
-          'session_id': '4',
-          'query': _queryController.text,
-          'user': 'parag.bajaj@piramal.com',
-          'source': 'local',
-          'usecase': 'ARYA-APP'
-        }),
-      );
-
-      // print('Response body: ${response.body}');
-
-      if (response.statusCode == 200) {
-        final responseBody = jsonDecode(response.body);
-        setState(() {
-          messages.add(ChatMessage(
-            text: responseBody['Response'],
-            isBotResponse: true,
-            timestamp: DateTime.now(), // Ensure timestamp is provided
-          ));
-        });
-
-        // Programmatically unfocus the TextField to dismiss the keyboard
-        FocusScope.of(context).unfocus();
-        _scrollToBottom();
-      } else {
-        setState(() {
-          _errorMessage =
-              'Error: ${response.statusCode} - ${response.reasonPhrase}';
-        });
-      }
-    } catch (e) {
-      setState(() {
-        _errorMessage = 'An error occurred: Please try again later';
-        Fluttertoast.showToast(
-            msg: _errorMessage,
-            backgroundColor: Colors.red,
-            textColor: Colors.white);
-      });
-    } finally {
-      setState(() {
-        _isLoading = false;
-      });
-    }
   }
 
   @override
@@ -213,12 +122,6 @@ class _ChatScreenState extends State<ChatScreen> {
                     value: dark,
                     onChanged: (value) {
                       widget.toggleThemeMode!();
-                      // final mode = value ? 'Dark mode' : 'Light mode';
-                      // Fluttertoast.showToast(
-                      //   msg: 'Switched to $mode',
-                      //   backgroundColor: Colors.black,
-                      //   textColor: Colors.white,
-                      // );
                     },
                     inactiveThumbImage: const AssetImage(
                         'assets/icons/light_mode.png'), // Light mode icon
@@ -247,28 +150,28 @@ class _ChatScreenState extends State<ChatScreen> {
                   children: [
                     ListView.builder(
                       controller:
-                          _scrollController, // Attach scroll controller here
-                      itemCount: messages.length,
+                          x.scrollController, // Attach scroll controller here
+                      itemCount: x.messages.length,
                       itemBuilder: (context, index) {
-                        final message = messages[index];
+                        final message = x.messages[index];
 
                         // Check if it's a bot response or user message
                         if (message.isBotResponse) {
                           return BotMessage(message.text, message.timestamp,
-                              messages.length == 1);
+                              x.messages.length == 1);
                         } else {
                           return UserMessage(message.text, message.timestamp);
                         }
                       },
                     ),
                     Visibility(
-                      visible: _showScrollToBottom,
+                      visible: x.showScrollToBottom,
                       child: Positioned(
                         bottom: -5,
                         left: (MediaQuery.of(context).size.width - 40) / 2,
                         width: 40,
                         child: GestureDetector(
-                          onTap: _scrollToBottom,
+                          onTap: x.scrollToBottom,
                           child: Container(
                             padding: const EdgeInsets.all(8),
                             decoration: BoxDecoration(
@@ -314,15 +217,15 @@ class _ChatScreenState extends State<ChatScreen> {
                     Expanded(
                       child: TextField(
                         onSubmitted: (value) {
-                          _sendQuery();
+                          x.sendQuery();
                         },
-                        controller: _queryController,
+                        controller: x.queryController,
                         style: TextStyle(
                             color: dark ? Colors.white : Colors.black,
                             fontSize: TSizes.fontSizeMd),
                         decoration: InputDecoration(
-                          hintText: _errorMessage.isNotEmpty
-                              ? _errorMessage
+                          hintText: x.errorMessage.isNotEmpty
+                              ? x.errorMessage
                               : 'Ask Me Anything... ',
                           hintStyle: TextStyle(
                               color: dark ? TColors.grey : Colors.grey,
@@ -360,7 +263,7 @@ class _ChatScreenState extends State<ChatScreen> {
                       ),
                     ),
                     IconButton(
-                      icon: _isLoading
+                      icon: x.isLoading
                           ? const Center(
                               child: SpinKitFadingCircle(
                                 color: TColors.primary,
@@ -372,7 +275,7 @@ class _ChatScreenState extends State<ChatScreen> {
                               height: 24,
                               width: 24,
                             ),
-                      onPressed: _isLoading ? null : _sendQuery,
+                      onPressed: x.isLoading ? null : x.sendQuery,
                     )
                   ],
                 ),
