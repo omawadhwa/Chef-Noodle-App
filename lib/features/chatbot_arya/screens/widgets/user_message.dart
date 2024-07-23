@@ -47,7 +47,7 @@ class UserMessage extends StatelessWidget {
                   ),
                   Text(
                     !isToday(timestamp)
-                        ? DateFormat("dd MMM yyyy  hh:mm a").format(timestamp)
+                        ? DateFormat("dd MMM yyyy hh:mm a").format(timestamp)
                         : DateFormat("hh:mm a").format(timestamp),
                     style: dark
                         ? const TextStyle(
