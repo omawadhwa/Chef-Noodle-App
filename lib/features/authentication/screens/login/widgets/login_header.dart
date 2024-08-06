@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:arya/utils/constants/image_strings.dart';
-import 'package:arya/utils/constants/sizes.dart';
-import 'package:arya/utils/constants/text_strings.dart';
-import 'package:arya/utils/helpers/helper_functions.dart';
+import 'package:chef_noodle/utils/constants/image_strings.dart';
+import 'package:chef_noodle/utils/constants/sizes.dart';
+import 'package:chef_noodle/utils/constants/text_strings.dart';
+import 'package:chef_noodle/utils/helpers/helper_functions.dart';
 
 class TLoginHeader extends StatelessWidget {
   const TLoginHeader({

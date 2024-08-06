@@ -1,4 +1,4 @@
-import 'package:arya/utils/constants/colors.dart';
+import 'package:chef_noodle/utils/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class TElevatedButtonTheme {
@@ -8,13 +8,13 @@ class TElevatedButtonTheme {
       style: ElevatedButton.styleFrom(
     elevation: 0,
     foregroundColor: Colors.white,
-    backgroundColor: TColors.textprimary,
+    backgroundColor: TColors.primary,
     disabledForegroundColor: Colors.grey,
     disabledBackgroundColor: Colors.grey,
-    side: const BorderSide(color: TColors.textprimary),
+    side: const BorderSide(color: TColors.primary),
     padding: const EdgeInsets.symmetric(vertical: 18),
     textStyle: const TextStyle(
-        fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+        fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
   ));
 
@@ -22,13 +22,13 @@ class TElevatedButtonTheme {
       style: ElevatedButton.styleFrom(
     elevation: 0,
     foregroundColor: Colors.white,
-    backgroundColor: TColors.textprimary,
+    backgroundColor: TColors.primary,
     disabledForegroundColor: Colors.grey,
     disabledBackgroundColor: Colors.grey,
-    side: const BorderSide(color: TColors.textprimary),
+    side: const BorderSide(color: TColors.primary),
     padding: const EdgeInsets.symmetric(vertical: 18),
     textStyle: const TextStyle(
-        fontSize: 16, color: Colors.white, fontWeight: FontWeight.w600),
+        fontSize: 16, color: Colors.black, fontWeight: FontWeight.w600),
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
   ));
 }

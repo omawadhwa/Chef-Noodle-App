@@ -1,10 +1,10 @@
-import 'package:arya/splash_screen.dart';
+import 'package:chef_noodle/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:arya/app.dart';
-import 'package:arya/utils/theme/theme.dart';
-import 'package:arya/controllers/theme_controller.dart';
-import 'package:arya/features/chatbot_arya/screens/chat_screen.dart'; //
+import 'package:chef_noodle/app.dart';
+import 'package:chef_noodle/utils/theme/theme.dart';
+import 'package:chef_noodle/controllers/theme_controller.dart';
+import 'package:chef_noodle/features/chatbot_arya/screens/chat_screen.dart'; //
 
 void main() {
   runApp(const App());

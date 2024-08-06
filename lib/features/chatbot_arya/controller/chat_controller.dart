@@ -1,11 +1,11 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:arya/utils/constants/api_constants.dart';
-import 'package:arya/utils/constants/api_paths.dart';
-import 'package:arya/utils/features/models/chat_response/chat_response.dart';
-import 'package:arya/utils/features/models/chatmessage.dart';
-import 'package:arya/utils/features/models/history/history_response.dart';
+import 'package:chef_noodle/utils/constants/api_constants.dart';
+import 'package:chef_noodle/utils/constants/api_paths.dart';
+import 'package:chef_noodle/utils/features/models/chat_response/chat_response.dart';
+import 'package:chef_noodle/utils/features/models/chatmessage.dart';
+import 'package:chef_noodle/utils/features/models/history/history_response.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';

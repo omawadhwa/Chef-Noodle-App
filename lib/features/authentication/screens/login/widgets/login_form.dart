@@ -1,12 +1,12 @@
 import 'dart:ffi';
 
-import 'package:arya/controllers/theme_controller.dart';
-import 'package:arya/utils/helpers/helper_functions.dart';
+import 'package:chef_noodle/controllers/theme_controller.dart';
+import 'package:chef_noodle/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:arya/utils/constants/sizes.dart';
-import 'package:arya/utils/constants/text_strings.dart';
-import 'package:arya/features/chatbot_arya/screens/chat_screen.dart';
+import 'package:chef_noodle/utils/constants/sizes.dart';
+import 'package:chef_noodle/utils/constants/text_strings.dart';
+import 'package:chef_noodle/features/chatbot_arya/screens/chat_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TLoginForm extends StatefulWidget {

@@ -1,11 +1,12 @@
-import 'package:arya/controllers/theme_controller.dart';
-import 'package:arya/features/chatbot_arya/screens/chat_screen.dart';
+import 'package:chef_noodle/controllers/theme_controller.dart';
+import 'package:chef_noodle/features/chatbot_arya/screens/chat_screen.dart';
+import 'package:chef_noodle/features/chef_noodle/screens/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:arya/features/authentication/screens/login/login.dart';
-import 'package:arya/utils/constants/colors.dart';
-import 'package:arya/utils/constants/sizes.dart';
-import 'package:arya/utils/helpers/helper_functions.dart';
+import 'package:chef_noodle/features/authentication/screens/login/login.dart';
+import 'package:chef_noodle/utils/constants/colors.dart';
+import 'package:chef_noodle/utils/constants/sizes.dart';
+import 'package:chef_noodle/utils/helpers/helper_functions.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -26,10 +27,7 @@ class SplashScreen extends StatelessWidget {
         Get.off(() => const LoginScreen());
       } else if (isAuthenticated) {
         final ThemeController themeController = Get.put(ThemeController());
-        Get.off(() => ChatScreen(
-              themeMode: themeController.themeMode.value,
-              toggleThemeMode: themeController.toggleThemeMode,
-            ));
+        Get.off(() => HomePage());
       }
       // Use Get.off to navigate
     });

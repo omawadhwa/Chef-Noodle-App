@@ -1,15 +1,15 @@
-import 'package:arya/utils/constants/colors.dart';
-import 'package:arya/utils/constants/image_strings.dart';
-import 'package:arya/utils/helpers/helper_functions.dart';
+import 'package:chef_noodle/utils/constants/colors.dart';
+import 'package:chef_noodle/utils/constants/image_strings.dart';
+import 'package:chef_noodle/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:arya/common/styles/spacing_styles.dart';
-import 'package:arya/common/widgets/login_signup/form_divider.dart';
-import 'package:arya/common/widgets/login_signup/social_buttons.dart';
-import 'package:arya/features/authentication/screens/login/widgets/login_form.dart';
-import 'package:arya/features/authentication/screens/login/widgets/login_header.dart';
-import 'package:arya/utils/constants/sizes.dart';
-import 'package:arya/utils/constants/text_strings.dart';
+import 'package:chef_noodle/common/styles/spacing_styles.dart';
+import 'package:chef_noodle/common/widgets/login_signup/form_divider.dart';
+import 'package:chef_noodle/common/widgets/login_signup/social_buttons.dart';
+import 'package:chef_noodle/features/authentication/screens/login/widgets/login_form.dart';
+import 'package:chef_noodle/features/authentication/screens/login/widgets/login_header.dart';
+import 'package:chef_noodle/utils/constants/sizes.dart';
+import 'package:chef_noodle/utils/constants/text_strings.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

@@ -1,5 +1,5 @@
 import 'dart:convert';
-import 'package:arya/utils/constants/api_constants.dart';
+import 'package:chef_noodle/utils/constants/api_constants.dart';
 import 'package:http/http.dart' as http;
 
 class THttpHelper {

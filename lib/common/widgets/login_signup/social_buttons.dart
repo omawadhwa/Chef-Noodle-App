@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:arya/utils/constants/colors.dart';
-import 'package:arya/utils/constants/image_strings.dart';
-import 'package:arya/utils/constants/sizes.dart';
+import 'package:chef_noodle/utils/constants/colors.dart';
+import 'package:chef_noodle/utils/constants/image_strings.dart';
+import 'package:chef_noodle/utils/constants/sizes.dart';
 
 class TSocialButtons extends StatelessWidget {
   const TSocialButtons({

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
-import 'package:arya/utils/constants/colors.dart';
-import 'package:arya/utils/helpers/helper_functions.dart';
+import 'package:chef_noodle/utils/constants/colors.dart';
+import 'package:chef_noodle/utils/helpers/helper_functions.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:intl/intl.dart';

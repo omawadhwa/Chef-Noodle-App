@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 import 'package:iconsax/iconsax.dart';
-import 'package:arya/utils/constants/sizes.dart';
-import 'package:arya/utils/device/device_utility.dart';
+import 'package:chef_noodle/utils/constants/sizes.dart';
+import 'package:chef_noodle/utils/device/device_utility.dart';
 
 class TAppBar extends StatelessWidget implements PreferredSizeWidget {
   const TAppBar(
