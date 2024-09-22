@@ -1,4 +1,4 @@
-package com.example.arya
+package com.example.chefnoodle
 
 import io.flutter.embedding.android.FlutterActivity
 

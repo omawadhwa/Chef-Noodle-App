@@ -30,7 +30,7 @@ class TAppTheme{
     fontFamily: 'Nunito',
     brightness: Brightness.dark,
     primaryColor: TColors.primary,
-    scaffoldBackgroundColor: Colors.black,
+    scaffoldBackgroundColor: const Color.fromARGB(255, 47, 70, 21),
     textTheme: TTextTheme.darkTextTheme,
     elevatedButtonTheme: TElevatedButtonTheme.darkElevatedButtonTheme,
     appBarTheme: TAppBarTheme.darkAppBarTheme,

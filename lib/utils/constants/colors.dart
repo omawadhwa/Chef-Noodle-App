@@ -4,8 +4,8 @@ class TColors{
   TColors._();
 
   //app basic colors
-  static const Color primary = Color.fromARGB(255, 85, 207, 255);
-  static const Color secondary = Color.fromARGB(255, 209, 207, 202);
+  static const Color primary = Color(0xFF388E3C);
+  static const Color secondary = Color.fromARGB(255, 238, 235, 229);
   static const Color accent = Color.fromARGB(255, 240, 240, 240);
 
   //gradient colors

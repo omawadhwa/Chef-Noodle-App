@@ -1,9 +1,8 @@
 import 'package:chef_noodle/controllers/theme_controller.dart';
-import 'package:chef_noodle/features/chatbot_arya/screens/chat_screen.dart';
-import 'package:chef_noodle/features/chef_noodle/screens/homepage.dart';
+import 'package:chef_noodle/features/chef_noodle/authentication/screens/login/login_page.dart';
+import 'package:chef_noodle/features/chef_noodle/screens/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:chef_noodle/features/authentication/screens/login/login.dart';
 import 'package:chef_noodle/utils/constants/colors.dart';
 import 'package:chef_noodle/utils/constants/sizes.dart';
 import 'package:chef_noodle/utils/helpers/helper_functions.dart';
@@ -24,40 +23,42 @@ class SplashScreen extends StatelessWidget {
       final isAuthenticated = prefs.getBool("isAuthenticated");
       // onLoaded(); // Call the callback to update the state in main.dart
       if (isAuthenticated == null) {
-        Get.off(() => const LoginScreen());
+        Get.off(() => LoginPage());
       } else if (isAuthenticated) {
-        final ThemeController themeController = Get.put(ThemeController());
-        Get.off(() => HomePage());
+        // final ThemeController themeController = Get.put(ThemeController());
+        // Get.off(() => HomePage());
       }
       // Use Get.off to navigate
     });
 
     return Scaffold(
-      backgroundColor: dark ? TColors.dark : TColors.primary,
+      backgroundColor: dark ? const Color.fromARGB(255, 47, 70, 21) : TColors.secondary,
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Splash image
             Image.asset(
-              'assets/logos/splash_bg.png',
+              'assets/logos/chef_noodle_logo.png',
+              width: 200,
+              height: 200,
             ),
             // Welcome text
             Text(
-              "Welcome to Arya!",
+              "Chef Noodle",
               style: TextStyle(
                 fontSize: 40,
                 fontWeight: FontWeight.bold,
-                color: dark ? TColors.primary : TColors.dark,
+                color: dark ? Colors.white : TColors.primary,
                 fontFamily: 'Nunito',
               ),
             ),
             Text(
-              'Powered by Piramal Finance',
+              'Made by Om Wadhwa',
               style: TextStyle(
                 fontFamily: 'Nunito',
                 fontSize: TSizes.fontSizeSm,
-                color: dark ? TColors.primary : Colors.white,
+                color: dark ? Colors.white : TColors.primary,
               ),
             ),
           ],

@@ -4,39 +4,10 @@ import 'package:get/get.dart';
 import 'package:chef_noodle/app.dart';
 import 'package:chef_noodle/utils/theme/theme.dart';
 import 'package:chef_noodle/controllers/theme_controller.dart';
-import 'package:chef_noodle/features/chatbot_arya/screens/chat_screen.dart'; //
+import 'package:firebase_core/firebase_core.dart'; //
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(); // Initialize Firebase here
   runApp(const App());
-}
-
-// class MyApp extends StatefulWidget {
-//   const MyApp({super.key});
-
-//   @override
-//   _MyAppState createState() => _MyAppState();
-// }
-
-// class _MyAppState extends State<MyApp> {
-//   bool _isSplashLoaded = false;
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     // Initialize splash screen
-//   }
-
-//   void _onSplashLoaded() {
-//     setState(() {
-//       _isSplashLoaded = true;
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GetMaterialApp(
-//       title: 'Arya App',
-//       home:
-//     );
-//   }
-// }
+} 

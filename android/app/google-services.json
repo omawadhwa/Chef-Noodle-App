@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1018492158099",
+    "project_id": "chef-noodle",
+    "storage_bucket": "chef-noodle.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1018492158099:android:0bfe02d05ac898cba64d66",
+        "android_client_info": {
+          "package_name": "com.example.chefnoodle"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCvuS9O0Dij46CWrdj_EbYGw0pIAwgm8Iw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
